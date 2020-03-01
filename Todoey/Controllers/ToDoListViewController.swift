@@ -21,9 +21,9 @@ class ToDoListViewController: UITableViewController {
         newItem.title = "help me"
         itemArray.append(newItem)
         
-        //        if let items = defaults.array(forKey: "ToDoListArray") as? [String]{
-        //            itemArray = items
-        //        }
+                if let items = defaults.array(forKey: "ToDoListArray") as? [Item]{
+                    itemArray = items
+                }
         
     }
     
@@ -33,13 +33,11 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        cell.textLabel?.text = itemArray[indexPath.row].title
+        let item = itemArray[indexPath.row]
         
-        if itemArray[indexPath.row].done == true {
-            cell.accessoryType = .none
-        } else {
-            cell.accessoryType = .checkmark
-        }
+        cell.textLabel?.text = item.title
+        
+        cell.accessoryType = item.done ? .checkmark : .none
         
         return cell
     }
@@ -47,11 +45,7 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(itemArray[indexPath.row])
         
-        if itemArray[indexPath.row].done == false{
-            itemArray[indexPath.row].done = true
-        } else {
-            itemArray[indexPath.row].done = false
-        }
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
         tableView.reloadData()
         
